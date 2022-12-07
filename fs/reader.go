@@ -11,9 +11,14 @@ import (
 	"github.com/koykov/fastconv"
 )
 
+// Reader represent filesystem reader implementation.
 type Reader struct {
+	// FilePath represents dumpfile path.
+	// Mandatory param.
 	FilePath string
-	OnEOF    func(filename string) error
+	// OnEOF calls when EOF of current file reaches.
+	// If this param omit os.Remove() will use by default.
+	OnEOF func(filename string) error
 
 	once sync.Once
 	fp   string
@@ -24,6 +29,9 @@ type Reader struct {
 	buf []byte
 }
 
+// Read reads entry from binary file.
+//
+// It returns entry and any error encountered.
 func (r *Reader) Read() (e cbytecache.Entry, err error) {
 	r.once.Do(r.init)
 
