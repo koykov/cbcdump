@@ -17,6 +17,7 @@ const (
 	flushChunkSize = 16
 )
 
+// Writer represent filesystem writer implementation.
 type Writer struct {
 	// Max buffer size in bytes.
 	// Writer will move buffered data to destination file on overflow.
@@ -39,6 +40,9 @@ type Writer struct {
 	err error
 }
 
+// Write writes entry to binary file.
+//
+// It returns the number of bytes written from entry and any error encountered.
 func (w *Writer) Write(entry cbytecache.Entry) (n int, err error) {
 	w.once.Do(w.init)
 	if w.err != nil {
@@ -76,6 +80,7 @@ func (w *Writer) Write(entry cbytecache.Entry) (n int, err error) {
 	return
 }
 
+// Flush flushes all buffered data to binary file and close it.
 func (w *Writer) Flush() (err error) {
 	w.once.Do(w.init)
 	if w.err != nil {
@@ -100,6 +105,7 @@ func (w *Writer) Flush() (err error) {
 	return
 }
 
+// Close is an alias of Flush() method.
 func (w *Writer) Close() error {
 	return w.Flush()
 }
