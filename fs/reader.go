@@ -18,7 +18,7 @@ type Reader struct {
 	FilePath string
 	// OnEOF calls when EOF of current file reaches.
 	// If this param omit os.Remove() will use by default.
-	OnEOF func(filename string) error
+	OnEOF OnEOF
 
 	once sync.Once
 	fp   string

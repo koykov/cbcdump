@@ -13,7 +13,7 @@ import (
 func TestReader(t *testing.T) {
 	r := Reader{
 		FilePath: "testdata/example.bin",
-		OnEOF:    func(_ string) error { return nil }, // dummy EOF function to keep testing dump file
+		OnEOF:    KeepFile,
 	}
 
 	for {
