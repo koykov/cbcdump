@@ -30,3 +30,11 @@ func isDirWR(path string) bool {
 	}
 	return true
 }
+
+func blockSizeOf(path string) int64 {
+	var stat syscall.Statfs_t
+	if err := syscall.Statfs(path, &stat); err != nil {
+		return 0
+	}
+	return stat.Bsize
+}

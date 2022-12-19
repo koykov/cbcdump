@@ -13,9 +13,7 @@ import (
 	"github.com/koykov/fastconv"
 )
 
-const (
-	flushChunkSize = 16
-)
+const defaultBlockSIze = 4096
 
 // Writer represent filesystem writer implementation.
 type Writer struct {
@@ -32,6 +30,7 @@ type Writer struct {
 	fp   string
 	fd   string
 	ft   string
+	bsz  int64
 
 	mux sync.Mutex
 	f   *os.File
@@ -121,6 +120,9 @@ func (w *Writer) init() {
 		w.err = ErrDirNoWR
 		return
 	}
+	if w.bsz = blockSizeOf(dir); w.bsz == 0 {
+		w.bsz = defaultBlockSIze
+	}
 
 	w.fp = w.FilePath
 	if w.bs = w.Buffer; w.bs > 0 {
@@ -142,11 +144,11 @@ func (w *Writer) flushBuf() (err error) {
 	}
 
 	p := w.buf
-	for len(p) >= flushChunkSize {
-		if _, err = w.f.Write(p[:flushChunkSize]); err != nil {
+	for len(p) >= int(w.bsz) {
+		if _, err = w.f.Write(p[:w.bsz]); err != nil {
 			return
 		}
-		p = p[flushChunkSize:]
+		p = p[w.bsz:]
 	}
 	if len(p) > 0 {
 		if _, err = w.f.Write(p); err != nil {

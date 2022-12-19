@@ -17,3 +17,7 @@ func isDirWR(path string) bool {
 	}
 	return true
 }
+
+func blockSizeOf(_ string) int64 {
+	return 0
+}
