@@ -7,8 +7,8 @@ import (
 	"sync"
 
 	"github.com/koykov/bytealg"
+	"github.com/koykov/byteconv"
 	"github.com/koykov/cbytecache"
-	"github.com/koykov/fastconv"
 )
 
 // Reader represent filesystem reader implementation.
@@ -84,7 +84,7 @@ func (r *Reader) Read() (e cbytecache.Entry, err error) {
 	e.Expire = binary.LittleEndian.Uint32(r.buf[off:])
 	off += 4
 
-	e.Key = fastconv.B2S(r.buf[klo:khi])
+	e.Key = byteconv.B2S(r.buf[klo:khi])
 	e.Body = r.buf[blo:bhi]
 
 	return

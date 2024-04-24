@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/koykov/bytealg"
+	"github.com/koykov/byteconv"
 	"github.com/koykov/cbytecache"
 	"github.com/koykov/clock"
-	"github.com/koykov/fastconv"
 )
 
 const defaultBlockSIze = 4096
@@ -136,7 +136,7 @@ func (w *Writer) flushBuf() (err error) {
 		if buf, err = clock.AppendFormat(buf, w.fp, time.Now()); err != nil {
 			return
 		}
-		w.fd = fastconv.B2S(buf)
+		w.fd = byteconv.B2S(buf)
 		w.ft = w.fd + ".tmp"
 		if w.f, err = os.Create(w.ft); err != nil {
 			return
